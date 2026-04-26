@@ -3,100 +3,809 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MtlFab 3D - Conception CAO & Design Industriel - Grand Montréal</title>
-    
-    <link rel="stylesheet" href="style.css">
-    
+    <title>MtlFab 3D — Conception CAO & Fabrication · Grand Montréal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --noir:    #080b0e;
+            --anthracite: #111519;
+            --acier:   #1b2128;
+            --bord:    #242b34;
+            --texte:   #c8d0d8;
+            --subtil:  #58667a;
+            --blanc:   #eef2f6;
+            --cyan:    #00d9d9;
+            --orange:  #ff6a2b;
+            --glow:    0 0 30px rgba(0,217,217,.25);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--noir);
+            color: var(--texte);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+
+        /* ── GRAIN OVERLAY ── */
+        body::before {
+            content: '';
+            position: fixed; inset: 0; z-index: 9999;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: .45;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 0 2.5rem;
+            height: 64px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(8,11,14,.85);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--bord);
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            letter-spacing: .12em;
+            color: var(--blanc);
+            display: flex; align-items: center; gap: .6rem;
+        }
+        .logo span { color: var(--cyan); }
+
+        .logo-mark {
+            width: 32px; height: 32px;
+            border: 2px solid var(--cyan);
+            display: grid; place-items: center;
+            transform: rotate(45deg);
+            box-shadow: var(--glow);
+        }
+        .logo-mark::after {
+            content: '';
+            width: 10px; height: 10px;
+            background: var(--cyan);
+            transform: rotate(-45deg);
+        }
+
+        nav ul { list-style: none; display: flex; gap: 2rem; }
+        nav a {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .72rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--subtil);
+            text-decoration: none;
+            transition: color .25s;
+            position: relative;
+        }
+        nav a::after {
+            content: '';
+            position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 1px;
+            background: var(--cyan);
+            transition: width .3s;
+        }
+        nav a:hover { color: var(--cyan); }
+        nav a:hover::after { width: 100%; }
+
+        .nav-cta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .72rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            padding: .5rem 1.2rem;
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            text-decoration: none;
+            transition: background .25s, color .25s, box-shadow .25s;
+        }
+        .nav-cta:hover {
+            background: var(--cyan);
+            color: var(--noir);
+            box-shadow: var(--glow);
+        }
+
+        /* ── HERO ── */
+        #accueil {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            padding: 100px 2.5rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Grid background */
+        #accueil::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(0,217,217,.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,217,217,.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 80% at 80% 50%, black 30%, transparent 80%);
+        }
+
+        /* Glowing orb */
+        #accueil::after {
+            content: '';
+            position: absolute;
+            right: 10%; top: 20%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(0,217,217,.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-text { position: relative; z-index: 2; }
+
+        .hero-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--cyan);
+            display: flex; align-items: center; gap: .8rem;
+            margin-bottom: 2rem;
+            opacity: 0; animation: fadeUp .7s .1s forwards;
+        }
+        .hero-tag::before {
+            content: '';
+            display: inline-block;
+            width: 32px; height: 1px;
+            background: var(--cyan);
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3.5rem, 6vw, 6rem);
+            line-height: .95;
+            letter-spacing: .03em;
+            color: var(--blanc);
+            margin-bottom: 1.5rem;
+            opacity: 0; animation: fadeUp .7s .25s forwards;
+        }
+        h1 .accent { color: var(--cyan); }
+        h1 .outline {
+            -webkit-text-stroke: 1px var(--blanc);
+            color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--subtil);
+            max-width: 480px;
+            margin-bottom: 2.5rem;
+            opacity: 0; animation: fadeUp .7s .4s forwards;
+        }
+
+        .hero-btns {
+            display: flex; gap: 1rem; flex-wrap: wrap;
+            opacity: 0; animation: fadeUp .7s .55s forwards;
+        }
+
+        .btn-primary {
+            background: var(--cyan);
+            color: var(--noir);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            padding: .9rem 2rem;
+            text-decoration: none;
+            transition: box-shadow .25s, transform .25s;
+            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 40px rgba(0,217,217,.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            border: 1px solid var(--bord);
+            color: var(--texte);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .75rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            padding: .9rem 2rem;
+            text-decoration: none;
+            transition: border-color .25s, color .25s;
+        }
+        .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+
+        /* Hero visual side */
+        .hero-visual {
+            position: relative; z-index: 2;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; animation: fadeIn 1s .5s forwards;
+        }
+
+        .blueprint-box {
+            width: 380px; height: 380px;
+            border: 1px solid var(--bord);
+            position: relative;
+            background: linear-gradient(135deg, var(--anthracite) 0%, var(--noir) 100%);
+            overflow: hidden;
+        }
+        .blueprint-box::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(0,217,217,.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,217,217,.06) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        .blueprint-box img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            mix-blend-mode: luminosity;
+            opacity: .55;
+        }
+
+        /* Corner decorations */
+        .corner {
+            position: absolute;
+            width: 20px; height: 20px;
+            border-color: var(--cyan);
+            border-style: solid;
+        }
+        .corner.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+        .corner.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+        .corner.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+        .corner.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+        .scan-line {
+            position: absolute; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+            opacity: .6;
+            animation: scan 3s linear infinite;
+        }
+
+        .overlay-tag {
+            position: absolute; bottom: 1rem; left: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .62rem;
+            color: var(--cyan);
+            letter-spacing: .1em;
+            opacity: .7;
+        }
+
+        /* ── STATS BAR ── */
+        .stats-bar {
+            background: var(--anthracite);
+            border-top: 1px solid var(--bord);
+            border-bottom: 1px solid var(--bord);
+            padding: 1.5rem 2.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+        }
+
+        .stat {
+            display: flex; flex-direction: column; align-items: center; gap: .25rem;
+        }
+        .stat-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--cyan);
+            letter-spacing: .05em;
+        }
+        .stat-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .65rem;
+            text-transform: uppercase;
+            letter-spacing: .15em;
+            color: var(--subtil);
+        }
+
+        /* ── SERVICES ── */
+        #services {
+            padding: 7rem 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+        }
+        .section-eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--cyan);
+            display: flex; align-items: center; gap: .8rem;
+            margin-bottom: 1rem;
+        }
+        .section-eyebrow::before {
+            content: '//';
+            opacity: .5;
+        }
+
+        h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 4vw, 4rem);
+            color: var(--blanc);
+            letter-spacing: .04em;
+            line-height: 1;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--bord);
+        }
+
+        .service-card {
+            background: var(--anthracite);
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            transition: background .3s;
+            cursor: default;
+        }
+        .service-card:hover { background: var(--acier); }
+
+        .card-img {
+            width: 100%; height: 220px;
+            object-fit: cover;
+            filter: grayscale(80%) brightness(.7);
+            transition: filter .4s, transform .4s;
+        }
+        .service-card:hover .card-img {
+            filter: grayscale(30%) brightness(.85);
+            transform: scale(1.03);
+        }
+
+        .card-img-wrap { overflow: hidden; position: relative; }
+        .card-img-wrap::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 60px;
+            background: linear-gradient(transparent, var(--anthracite));
+            transition: background .3s;
+        }
+        .service-card:hover .card-img-wrap::after {
+            background: linear-gradient(transparent, var(--acier));
+        }
+
+        .card-body { padding: 1.5rem 1.75rem 2rem; }
+
+        .card-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .62rem;
+            text-transform: uppercase;
+            letter-spacing: .15em;
+            color: var(--orange);
+            margin-bottom: .75rem;
+            display: block;
+        }
+
+        .card-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: .05em;
+            color: var(--blanc);
+            margin-bottom: .75rem;
+            line-height: 1.1;
+        }
+
+        .card-desc {
+            font-size: .875rem;
+            line-height: 1.7;
+            color: var(--subtil);
+        }
+
+        .card-arrow {
+            display: block;
+            margin-top: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+            letter-spacing: .1em;
+            color: var(--cyan);
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: opacity .3s, transform .3s;
+        }
+        .service-card:hover .card-arrow { opacity: 1; transform: translateX(0); }
+
+        /* Card number */
+        .card-num {
+            position: absolute; top: 1rem; right: 1rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            color: rgba(255,255,255,.04);
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        /* ── PROCESS ── */
+        #processus {
+            background: var(--anthracite);
+            border-top: 1px solid var(--bord);
+            border-bottom: 1px solid var(--bord);
+            padding: 6rem 2.5rem;
+        }
+
+        .process-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            margin-top: 4rem;
+            position: relative;
+        }
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 2rem; left: 2rem; right: 2rem;
+            height: 1px;
+            background: linear-gradient(90deg, var(--cyan), var(--orange), var(--cyan));
+            opacity: .3;
+        }
+
+        .step { padding: 0 2rem 0 0; position: relative; }
+
+        .step-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+            color: var(--cyan);
+            letter-spacing: .1em;
+            margin-bottom: 1.5rem;
+            display: flex; align-items: center; gap: .5rem;
+        }
+        .step-dot {
+            width: 12px; height: 12px;
+            border: 1px solid var(--cyan);
+            border-radius: 50%;
+            background: var(--noir);
+            position: relative;
+        }
+        .step-dot::after {
+            content: '';
+            position: absolute; inset: 2px;
+            background: var(--cyan);
+            border-radius: 50%;
+        }
+
+        .step-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: .05em;
+            color: var(--blanc);
+            margin-bottom: .5rem;
+        }
+        .step-desc {
+            font-size: .82rem;
+            line-height: 1.7;
+            color: var(--subtil);
+        }
+
+        /* ── CONTACT / FOOTER ── */
+        #contact {
+            padding: 7rem 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        #contact::before {
+            content: '';
+            position: absolute;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px; height: 400px;
+            background: radial-gradient(ellipse, rgba(0,217,217,.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .contact-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative; z-index: 2;
+        }
+
+        .contact-inner h2 {
+            font-size: clamp(2.5rem, 5vw, 5rem);
+            margin-bottom: 1rem;
+        }
+
+        .contact-inner p {
+            color: var(--subtil);
+            font-size: 1rem;
+            line-height: 1.8;
+            max-width: 520px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .email-link {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--cyan);
+            text-decoration: none;
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            border: 1px solid var(--cyan);
+            transition: background .25s, box-shadow .25s, transform .25s;
+            letter-spacing: .08em;
+            clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+        }
+        .email-link:hover {
+            background: rgba(0,217,217,.1);
+            box-shadow: 0 0 60px rgba(0,217,217,.3);
+            transform: translateY(-3px);
+        }
+
+        .location-tags {
+            display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+        .loc-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .65rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            color: var(--subtil);
+            border: 1px solid var(--bord);
+            padding: .4rem .9rem;
+        }
+
+        /* ── FOOTER BOTTOM ── */
+        .footer-bar {
+            background: var(--anthracite);
+            border-top: 1px solid var(--bord);
+            padding: 1.25rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-bar p {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .65rem;
+            letter-spacing: .1em;
+            color: var(--subtil);
+        }
+        .footer-bar .pulse {
+            display: inline-block;
+            width: 6px; height: 6px;
+            background: var(--cyan);
+            border-radius: 50%;
+            margin-right: .5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        @keyframes scan {
+            0%   { top: -2px; }
+            100% { top: 100%; }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .4; transform: scale(1.5); }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            #accueil { grid-template-columns: 1fr; padding-top: 110px; }
+            .hero-visual { display: none; }
+            .services-grid { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: 1fr 1fr; gap: 2rem; }
+            .steps::before { display: none; }
+            .stats-bar { gap: 2rem; flex-wrap: wrap; }
+        }
+        @media (max-width: 600px) {
+            nav ul { display: none; }
+            .steps { grid-template-columns: 1fr; }
+            h1 { font-size: 3.2rem; }
+        }
+    </style>
 </head>
 <body>
 
+    <!-- NAV -->
     <nav>
-        <div class="nav-container">
-            <div class="logo">
-                <svg width="30" height="30" viewBox="0 0 100 100" class="logo-icon">
-                    <rect x="10" y="10" width="80" height="80" rx="15" fill="#2c3e50"/>
-                    <path d="M50 20 C 55 35, 65 40, 80 40 C 65 45, 55 50, 50 65 C 45 50, 35 45, 20 40 C 35 40, 45 35, 50 20 Z" fill="#00ced1"/>
-                    <rect x="45" y="65" width="10" height="15" rx="2" fill="#00ced1"/>
-                </svg>
-                MtlFab<span>3D</span>
-            </div>
-            <ul>
-                <li><a href="#accueil">Accueil</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+        <div class="logo">
+            <div class="logo-mark"></div>
+            Mtl<span>Fab3D</span>
         </div>
+        <ul>
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#processus">Processus</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a href="#contact" class="nav-cta">Soumission</a>
     </nav>
 
-    <header id="accueil">
-        <div class="hero-content">
-            <h1>Expertise en Conception 3D <br>au service du <span>Grand Montréal</span></h1>
-            <p>De la modélisation CAO haute précision pour la fabrication industrielle au design graphique 2D vectoriel. Nous propulsons les projets des entrepreneurs québécois.</p>
+    <!-- HERO -->
+    <section id="accueil">
+        <div class="hero-text">
+            <div class="hero-tag">Grand Montréal · Laval · Longueuil</div>
+            <h1>
+                Conception<br>
+                <span class="outline">CAO</span> &amp;<br>
+                <span class="accent">Fabrication</span>
+            </h1>
+            <p class="hero-desc">Modélisation 3D haute précision, plans industriels et design vectoriel pour les entrepreneurs qui ne font pas dans la demi-mesure.</p>
             <div class="hero-btns">
-                <a href="#contact" class="btn btn-primary">Obtenir une soumission locale</a>
-                <a href="#services" class="btn btn-secondary">Découvrir nos services</a>
+                <a href="#contact" class="btn-primary">Obtenir une soumission</a>
+                <a href="#services" class="btn-secondary">Voir les services</a>
             </div>
         </div>
-    </header>
 
+        <div class="hero-visual">
+            <div class="blueprint-box">
+                <div class="corner tl"></div>
+                <div class="corner tr"></div>
+                <div class="corner bl"></div>
+                <div class="corner br"></div>
+                <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=700&auto=format&fit=crop" alt="Modélisation 3D industrielle">
+                <div class="scan-line"></div>
+                <div class="overlay-tag">CAD_MODEL_v2.4 // ANALYSE EN COURS</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+        <div class="stat">
+            <span class="stat-num">+120</span>
+            <span class="stat-label">Projets livrés</span>
+        </div>
+        <div class="stat">
+            <span class="stat-num">ISO</span>
+            <span class="stat-label">Normes respectées</span>
+        </div>
+        <div class="stat">
+            <span class="stat-num">48h</span>
+            <span class="stat-label">Délai soumission</span>
+        </div>
+        <div class="stat">
+            <span class="stat-num">3</span>
+            <span class="stat-label">Régions desservies</span>
+        </div>
+    </div>
+
+    <!-- SERVICES -->
     <section id="services">
-        <div class="container">
-            <h2 class="section-title">Nos Services Techniques</h2>
-            <p class="section-subtitle">Solutions complètes de la conception à la pré-fabrication.</p>
-            
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="card-img-container">
-                        <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=600&auto=format&fit=crop" alt="Rendu 3D pièce mécanique CAO">
-                    </div>
-                    <div class="card-content">
-                        <span class="service-tag">Technologie 3D</span>
-                        <h3>Modélisation CAO & Industriel</h3>
-                        <p>Création de modèles 3D complexes, assemblages mécaniques et optimisations pour l'impression 3D ou l'usinage CNC.</p>
-                    </div>
-                </div>
+        <div class="section-header">
+            <div class="section-eyebrow">Services techniques</div>
+            <h2>Ce qu'on<br>maîtrise</h2>
+        </div>
 
-                <div class="service-card">
-                    <div class="card-img-container">
-                        <img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=600&auto=format&fit=crop" alt="Design logo vectoriel 2D">
-                    </div>
-                    <div class="card-content">
-                        <span class="service-tag">Identité 2D</span>
-                        <h3>Design Graphique Vectoriel</h3>
-                        <p>Création de logos modernes, identités visuelles complètes et tracés vectoriels précis pour découpe laser ou impression.</p>
-                    </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <span class="card-num">01</span>
+                <div class="card-img-wrap">
+                    <img class="card-img" src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=600&auto=format&fit=crop" alt="Modélisation CAO 3D">
                 </div>
+                <div class="card-body">
+                    <span class="card-tag">Technologie 3D</span>
+                    <div class="card-title">Modélisation CAO & Industriel</div>
+                    <p class="card-desc">Modèles 3D complexes, assemblages mécaniques et optimisations pour l'impression 3D ou l'usinage CNC. Précision au centième.</p>
+                    <span class="card-arrow">→ En savoir plus</span>
+                </div>
+            </div>
 
-                <div class="service-card">
-                    <div class="card-img-container">
-                        <img src="https://images.unsplash.com/photo-1581094719001-c88a87614f86?q=80&w=600&auto=format&fit=crop" alt="Plan technique industriel blueprint">
-                    </div>
-                    <div class="card-content">
-                        <span class="service-tag">Documentation</span>
-                        <h3>Mise en Plan & Technique</h3>
-                        <p>Production de dessins industriels détaillés, cotations fonctionnelles et tolérançage selon les normes ISO/ASME.</p>
-                    </div>
+            <div class="service-card">
+                <span class="card-num">02</span>
+                <div class="card-img-wrap">
+                    <img class="card-img" src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=600&auto=format&fit=crop" alt="Design vectoriel logo">
+                </div>
+                <div class="card-body">
+                    <span class="card-tag">Identité 2D</span>
+                    <div class="card-title">Design Graphique Vectoriel</div>
+                    <p class="card-desc">Logos modernes, identités visuelles et tracés vectoriels précis pour découpe laser, sérigraphie ou impression grand format.</p>
+                    <span class="card-arrow">→ En savoir plus</span>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <span class="card-num">03</span>
+                <div class="card-img-wrap">
+                    <img class="card-img" src="https://images.unsplash.com/photo-1581094719001-c88a87614f86?q=80&w=600&auto=format&fit=crop" alt="Plan technique industriel">
+                </div>
+                <div class="card-body">
+                    <span class="card-tag">Documentation</span>
+                    <div class="card-title">Mise en Plan & Technique</div>
+                    <p class="card-desc">Dessins industriels détaillés, cotations fonctionnelles et tolérançage selon les normes ISO/ASME. Prêt pour l'atelier.</p>
+                    <span class="card-arrow">→ En savoir plus</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer id="contact">
-        <div class="container">
-            <div class="contact-box">
-                <h2>Prêt à lancer votre projet au Québec ?</h2>
-                <p>Basé à Laval, nous servons tout le Grand Montréal. Contactez-nous pour une analyse gratuite de vos besoins en conception.</p>
-                <a href="mailto:info@mtlfab3d.ca" class="contact-email">info@mtlfab3d.ca</a>
+    <!-- PROCESSUS -->
+    <section id="processus">
+        <div class="process-inner">
+            <div class="section-header">
+                <div class="section-eyebrow">Notre approche</div>
+                <h2>De l'idée au<br>fichier final</h2>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 MtlFab 3D. Tous droits réservés.</p>
-                <p>Services Techniques | Montréal • Laval • Longueuil</p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">
+                        <span class="step-dot"></span>
+                        01
+                    </div>
+                    <div class="step-title">Analyse du besoin</div>
+                    <p class="step-desc">Appel ou rencontre pour comprendre vos contraintes techniques, vos matériaux cibles et vos délais.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">
+                        <span class="step-dot"></span>
+                        02
+                    </div>
+                    <div class="step-title">Soumission gratuite</div>
+                    <p class="step-desc">Estimation claire sous 48h. Pas de surprise, pas de frais cachés. On s'entend sur la portée avant de commencer.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">
+                        <span class="step-dot"></span>
+                        03
+                    </div>
+                    <div class="step-title">Conception & révisions</div>
+                    <p class="step-desc">Modélisation itérative avec révisions incluses. Vous validez chaque étape clé du projet.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">
+                        <span class="step-dot"></span>
+                        04
+                    </div>
+                    <div class="step-title">Livraison des fichiers</div>
+                    <p class="step-desc">Fichiers natifs + formats standards (STEP, DXF, PDF, SVG). Prêts pour la fabrication ou l'intégration directe.</p>
+                </div>
             </div>
         </div>
-    </footer>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+        <div class="contact-inner">
+            <div class="section-eyebrow" style="justify-content:center; margin-bottom:1.25rem;">Démarrer un projet</div>
+            <h2>Parlons de votre<br><span style="color:var(--cyan)">prochain défi</span></h2>
+            <p>Basé à Laval, on dessert tout le Grand Montréal. Analyse gratuite de vos besoins, réponse dans les 24h.</p>
+            <a href="mailto:info@mtlfab3d.ca" class="email-link">info@mtlfab3d.ca</a>
+            <div class="location-tags">
+                <span class="loc-tag">📍 Laval</span>
+                <span class="loc-tag">📍 Montréal</span>
+                <span class="loc-tag">📍 Longueuil</span>
+                <span class="loc-tag">📍 Rive-Nord</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer-bar">
+        <p><span class="pulse"></span>© 2026 MtlFab 3D — Tous droits réservés</p>
+        <p>Conception locale · Qualité industrielle</p>
+    </div>
 
 </body>
 </html>
