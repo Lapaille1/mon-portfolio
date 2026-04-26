@@ -3,76 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conception 3D & Design Graphique</title>
+    <title>MtlFab 3D - Conception CAO & Design Industriel - Grand Montréal</title>
+    
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <nav>
-       <div class="logo">
-    <div class="logo-icon"></div> MtlFab<span>3D</span>
-</div>
-
-<h1>Conception 3D & Dessin Industriel <br>au service du <span>Grand Montréal</span></h1>
-<p>Modélisation CAO haute précision pour la fabrication et création graphique 2D pour entrepreneurs québécois.</p>
-<a href="#contact" class="btn">Obtenir un devis local</a>
-
-<h3>Modélisation pour Fabrication</h3>
-<p>Optimisé pour les ateliers d'usinage de Laval et Longueuil.</p>
-
-<h3>Design Graphique Vectoriel</h3>
-<p>Logos et identités visuelles pour startups montréalaises.</p>
-
-<h2>Propulsez votre projet au Québec</h2>
-<p>Basé dans le Grand Montréal, disponible pour rencontres ou collaboration à distance.</p>
+        <div class="nav-container">
+            <div class="logo">
+                <svg width="30" height="30" viewBox="0 0 100 100" class="logo-icon">
+                    <rect x="10" y="10" width="80" height="80" rx="15" fill="#2c3e50"/>
+                    <path d="M50 20 C 55 35, 65 40, 80 40 C 65 45, 55 50, 50 65 C 45 50, 35 45, 20 40 C 35 40, 45 35, 50 20 Z" fill="#00ced1"/>
+                    <rect x="45" y="65" width="10" height="15" rx="2" fill="#00ced1"/>
+                </svg>
+                MtlFab<span>3D</span>
+            </div>
+            <ul>
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
     </nav>
 
-    <header>
-        <h1>Conception 3D & <br><span>Design Industriel</span></h1>
-        <p>Expertise en modélisation CAO, dessin technique et création d'identité visuelle 2D.</p>
-        <a href="#projets" class="btn">Voir mes travaux</a>
+    <header id="accueil">
+        <div class="hero-content">
+            <h1>Expertise en Conception 3D <br>au service du <span>Grand Montréal</span></h1>
+            <p>De la modélisation CAO haute précision pour la fabrication industrielle au design graphique 2D vectoriel. Nous propulsons les projets des entrepreneurs québécois.</p>
+            <div class="hero-btns">
+                <a href="#contact" class="btn btn-primary">Obtenir une soumission locale</a>
+                <a href="#services" class="btn btn-secondary">Découvrir nos services</a>
+            </div>
+        </div>
     </header>
 
-    <section id="projets">
-        <h2 class="section-title">Mes Réalisations</h2>
-        <div class="grid">
-            <div class="card">
-                <div class="card-img" style="background-image: url('https://via.placeholder.com/400x300?text=Rendu+3D+Piece');"></div>
-                <div class="card-content">
-                    <h3>Conception Pièce Mécanique</h3>
-                    <p>Modélisation 3D pour impression et usinage.</p>
-                    <span class="tag">CAO / 3D</span>
+    <section id="services">
+        <div class="container">
+            <h2 class="section-title">Nos Services Techniques</h2>
+            <p class="section-subtitle">Solutions complètes de la conception à la pré-fabrication.</p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=600&auto=format&fit=crop" alt="Rendu 3D pièce mécanique CAO">
+                    </div>
+                    <div class="card-content">
+                        <span class="service-tag">Technologie 3D</span>
+                        <h3>Modélisation CAO & Industriel</h3>
+                        <p>Création de modèles 3D complexes, assemblages mécaniques et optimisations pour l'impression 3D ou l'usinage CNC.</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <div class="card-img" style="background-image: url('https://via.placeholder.com/400x300?text=Logo+Design');"></div>
-                <div class="card-content">
-                    <h3>Identité Visuelle</h3>
-                    <p>Création de logo vectoriel et charte graphique.</p>
-                    <span class="tag">2D / Logo</span>
+                <div class="service-card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=600&auto=format&fit=crop" alt="Design logo vectoriel 2D">
+                    </div>
+                    <div class="card-content">
+                        <span class="service-tag">Identité 2D</span>
+                        <h3>Design Graphique Vectoriel</h3>
+                        <p>Création de logos modernes, identités visuelles complètes et tracés vectoriels précis pour découpe laser ou impression.</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <div class="card-img" style="background-image: url('hta.placeholder.com/400x300?text=Plan+Industriel');"></div>
-                <div class="card-content">
-                    <h3>Dessin Industriel</h3>
-                    <p>Mise en plan et schémas techniques détaillés.</
-                    <span class="tag">Technique</span>
+                <div class="service-card">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1581094719001-c88a87614f86?q=80&w=600&auto=format&fit=crop" alt="Plan technique industriel blueprint">
+                    </div>
+                    <div class="card-content">
+                        <span class="service-tag">Documentation</span>
+                        <h3>Mise en Plan & Technique</h3>
+                        <p>Production de dessins industriels détaillés, cotations fonctionnelles et tolérançage selon les normes ISO/ASME.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <footer id="contact">
-        <h2>Un projet en tête ?</h2>
-        <p>Contactez-moi pour toute demande de devis ou collaboration.
-        <p><strong>email@exemple.com</strong></p>
-        <div class="socials">
+        <div class="container">
+            <div class="contact-box">
+                <h2>Prêt à lancer votre projet au Québec ?</h2>
+                <p>Basé à Laval, nous servons tout le Grand Montréal. Contactez-nous pour une analyse gratuite de vos besoins en conception.</p>
+                <a href="mailto:info@mtlfab3d.ca" class="contact-email">info@mtlfab3d.ca</a>
             </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 MtlFab 3D. Tous droits réservés.</p>
+                <p>Services Techniques | Montréal • Laval • Longueuil</p>
+            </div>
+        </div>
     </footer>
 
 </body>
