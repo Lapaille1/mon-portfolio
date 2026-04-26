@@ -1,57 +1,34 @@
 /* Variables de couleurs */
 :root {
-    --primary: #2563eb;
-    --dark: #1e293b;
-    --light: #f8fafc;
-    --text: #334155;
+    /* Nouvelles couleurs : Bleu Cyan Techno et Gris Acier */
+    --primary: #00ced1; /* DarkCyan, très dynamique */
+    --dark: #2c3e50;    /* Gris bleu sombre industriel */
+    --light: #f4f7f6;
+    --text: #34495e;
+    --accent: #e74c3c;  /* Une touche de rouge pour le contraste (optionnel) */
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    line-height: 1.6;
-    color: var(--text);
-    background-color: var(--light);
-}
-
-/* Navigation */
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 10%;
-    background: white;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
+/* Style du Logo stylisé avec la fleur de lys subtile */
 .logo {
     font-weight: 700;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .logo span { color: var(--primary); }
 
-nav ul { display: flex; list-style: none; }
-
-nav ul li a {
-    margin-left: 2rem;
-    text-decoration: none;
-    color: var(--text);
-    font-weight: 500;
-    transition: color 0.3s;
+/* Le signe québécois subtil (fleur de lys géométrique) */
+.logo-icon {
+    width: 24px;
+    height: 24px;
+    background-color: var(--primary);
+    /* Code pour dessiner une forme géométrique simple évoquant la lys */
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* Exemple : un losange technique */
+    /* Idéalement, remplace ceci par un petit SVG de fleur de lys minimaliste */
 }
-
-nav ul li a:hover { color: var(--primary); }
-
 /* Header */
 header {
     height: 80vh;
