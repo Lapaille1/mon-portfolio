@@ -135,3 +135,17 @@ footer {
     text-align: center;
     padding: 4rem 10%;
 }
+/* Effet de zoom sur l'image */
+.card:hover .card-img {
+    transform: scale(1.1);
+}
+
+.card-img {
+    transition: transform 0.5s ease;
+}
+
+/* Accentuer l'ombre au survol */
+.card:hover {
+    box-shadow: 0 15px 30px rgba(37, 99, 235, 0.2);
+    border: 1px solid var(--primary);
+}
